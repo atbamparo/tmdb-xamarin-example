@@ -36,40 +36,57 @@ namespace TMDbExample.Core.Service
         private IEnumerable<Movie> MapToMovies(UpcomingMoviesData movies)
         {
             var imageConfiguration = _configurationService.GetImageConfiguration();
-            var (posterSize, backdropSize) = GetPreferredImageSizes(imageConfiguration);
-
-            return movies.Results.Select(data => new Movie
+            return movies.Results.Select(data =>
             {
-                Id = data.Id,
-                Title = data.Title,
-                OriginalTitle = data.OriginalTitle,
-                PosterUrl = $"{imageConfiguration.BaseUrl}/{posterSize}{data.PosterPath}",
-                BackdropUrl = $"{imageConfiguration.BaseUrl}/{backdropSize}{data.PosterPath}",
-                Genres = data.GenreIds.Select(id => _configurationService.GetGenre(id))
+                var (posterUrl, backdropUrl) = GetImageUrls(imageConfiguration, data.PosterPath, data.BackdropPath);
+                var movie = new Movie
+                {
+                    Id = data.Id,
+                    Title = data.Title,
+                    OriginalTitle = data.OriginalTitle,
+                    PosterUrl = posterUrl,
+                    BackdropUrl = backdropUrl,
+                    ReleaseDate = data.ReleaseDate,
+                    Genres = data.GenreIds.Select(id => _configurationService.GetGenre(id)).ToList()
+                };
+                return movie;
             });
         }
 
         private Movie MapToMovie(MovieData data)
         {
             var imageConfiguration = _configurationService.GetImageConfiguration();
-            var (posterSize, backdropSize) = GetPreferredImageSizes(imageConfiguration);
+            var (posterUrl, backdropUrl) = GetImageUrls(imageConfiguration, data.PosterPath, data.BackdropPath);
 
             return new Movie
             {
                 Id = data.Id,
                 Title = data.Title,
                 OriginalTitle = data.OriginalTitle,
-                PosterUrl = $"{imageConfiguration.BaseUrl}/{posterSize}{data.PosterPath}",
-                BackdropUrl = $"{imageConfiguration.BaseUrl}/{backdropSize}{data.PosterPath}",
-                Genres = data.Genres.Select(g => g.Name)
+                PosterUrl = posterUrl,
+                BackdropUrl = backdropUrl,
+                ReleaseDate = data.ReleaseDate,
+                Genres = data.Genres.Select(g => g.Name).ToList()
             };
         }
 
-        private (string posterSize, string backdropSize) GetPreferredImageSizes(ImageConfiguration config)
+        private (string posterUrl, string backdropUrl) GetImageUrls(ImageConfiguration config, string posterPath, string backdropPath)
         {
-            var posterSize = config.PosterSizes.Count > 1 ? config.PosterSizes[1] : config.PosterSizes.FirstOrDefault();
-            var backdropSize = config.BackdropSizes.Count > 1 ? config.BackdropSizes[1] : config.BackdropSizes.FirstOrDefault();
-            return (posterSize, backdropSize);
+            string posterUrl = null;
+            if (!string.IsNullOrWhiteSpace(posterPath))
+            {
+                var posterSize = config.PosterSizes.Count > 1 ? config.PosterSizes[1] : config.PosterSizes.FirstOrDefault();
+                posterUrl = $"{config.BaseUrl}{posterSize}{posterPath}";
+            }
+
+            string backdropUrl = null;
+            if (!string.IsNullOrWhiteSpace(backdropPath))
+            {
+                var backdropSize = config.BackdropSizes.Count > 1 ? config.BackdropSizes[1] : config.BackdropSizes.FirstOrDefault();
+                backdropUrl = $"{config.BaseUrl}{backdropSize}{backdropPath}";
+            }
+            
+            return (posterUrl, backdropUrl);
         }
     }
 }

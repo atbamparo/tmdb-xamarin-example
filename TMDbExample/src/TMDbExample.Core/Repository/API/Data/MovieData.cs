@@ -15,7 +15,7 @@ namespace TMDbExample.Core.Repository.API.Data
 
         public string Overview { get; set; }
 
-        public DateTimeOffset ReleaseDate { get; set; }
+        public DateTime ReleaseDate { get; set; }
 
         public CollectionData BelongsToCollection { get; set; }
 

@@ -2,14 +2,22 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:converters="clr-namespace:TMDbExample.Forms.Converters"
              x:Class="TMDbExample.Views.UpcomingMoviesPage"
              Title="Upcoming movies"
              x:Name="BrowseItemsPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:ArrayToStringConverter x:Key="genresToString" Separator=" / " />
+            <converters:EmptyImageUrlToPlaceholder x:Key="EmptyImageUrlToPlaceholder" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
     <ContentPage.Content>
         <StackLayout>
             <ListView x:Name="ItemsListView" 
                 ItemsSource="{Binding Movies}"
-                RowHeight="300"
+                RowHeight="200"
                 VerticalOptions="FillAndExpand"
                 RefreshCommand="{Binding LoadUpcomingMoviesCommand}"
                 IsPullToRefreshEnabled="true"
@@ -20,27 +28,23 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <RelativeLayout>
-                                <ff:CachedImage Aspect="AspectFill" Source="{Binding BackdropUrl}"
-                                    RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width}"
-                                    RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height}"
+                            <Grid Padding="5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="3*" />
+                                </Grid.ColumnDefinitions>
+
+                                <ff:CachedImage Aspect="AspectFit" Source="{Binding PosterUrl, Converter={StaticResource EmptyImageUrlToPlaceholder}}" Grid.Column="0"
                                     LoadingPlaceholder="http://www.theprintworks.com/wp-content/themes/psBella/assets/img/film-poster-placeholder.png"
-                                    ErrorPlaceholder="http://www.theprintworks.com/wp-content/themes/psBella/assets/img/film-poster-placeholder.png" />
-                                <Grid
-                                RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height}"
-                                RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width}">
-                                    <StackLayout VerticalOptions="End" HorizontalOptions="Fill" BackgroundColor="#99000000" >
-                                        <Label Text="{Binding Title}" 
-                                        LineBreakMode="TailTruncation" 
-                                        Style="{DynamicResource ListItemTextStyle}" 
-                                        FontSize="Medium"
-                                        VerticalOptions="Center"
-                                        HorizontalOptions="Center"
-                                        TextColor="White"
-                                        RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width}"/>
-                                    </StackLayout>
-                                </Grid>
-                            </RelativeLayout>
+                                    ErrorPlaceholder="http://www.theprintworks.com/wp-content/themes/psBella/assets/img/film-poster-placeholder.png">
+                                </ff:CachedImage>
+
+                                <StackLayout Grid.Column="1" VerticalOptions="Center" HorizontalOptions="StartAndExpand">
+                                    <Label Text="{Binding Title}" FontSize="Large" />
+                                    <Label Text="{Binding Genres, Converter={StaticResource genresToString}, ConverterParameter='No genre info available', StringFormat='({0})'}" FontSize="Micro" LineBreakMode="NoWrap" />
+                                    <Label Text="{Binding ReleaseDate, StringFormat='{0:m}'}"/>
+                                </StackLayout>
+                            </Grid>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
