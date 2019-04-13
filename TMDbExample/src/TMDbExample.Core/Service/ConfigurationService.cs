@@ -22,13 +22,22 @@ namespace TMDbExample.Core.Service
             _configurationRepository = configurationRepository;
         }
 
-        public Task ConfigureIfNeededAsync()
+        public async Task ConfigureIfNeededAsync()
         {
             if (_configuring == null)
             {
                 _configuring = Configure();
             }
-            return _configuring;
+
+            try
+            {
+                await _configuring;
+            }
+            catch
+            {
+                _configuring = null;
+                throw;
+            }
         }
         
 

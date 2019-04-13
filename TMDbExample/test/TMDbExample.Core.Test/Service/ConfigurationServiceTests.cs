@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TMDbExample.Core.Repository.API;
@@ -81,7 +82,7 @@ namespace TMDbExample.Core.Test.Service
         }
 
         [TestMethod]
-        public async Task MultipleCallsDuringConfigurationShouldNotFetchDataMoreThanOnce()
+        public async Task MultipleCallsWhileConfiguringShouldNotFetchDataMoreThanOnce()
         {
             var releaseConfigurationTask = new TaskCompletionSource<ConfigurationData>();
             ConfigurationRepositoryMock.Setup(r => r.GetConfigurationAsync())
@@ -100,6 +101,24 @@ namespace TMDbExample.Core.Test.Service
 
             ConfigurationRepositoryMock.Verify(r => r.GetConfigurationAsync(), Times.Once);
         }
+
+        [TestMethod]
+        public async Task ConfigureAfterFailedConfigureAttemptShouldTryFetchDataAgain()
+        {
+            ConfigurationRepositoryMock.SetupSequence(r => r.GetConfigurationAsync())
+               .ThrowsAsync(new Exception())
+               .ReturnsAsync(CreateBasicConfigurationData());
+
+            ConfigurationRepositoryMock.Setup(r => r.GetGenresAsync())
+                .ReturnsAsync(CreateBasicGenresData())
+                .Verifiable();
+
+            await Assert.ThrowsExceptionAsync<Exception>(() => ConfigurationService.ConfigureIfNeededAsync());
+            await ConfigurationService.ConfigureIfNeededAsync();
+
+            ConfigurationRepositoryMock.Verify(r => r.GetConfigurationAsync(), Times.Exactly(2));
+        }
+
 
         private void ConfigureMockWithBasicData()
         {
