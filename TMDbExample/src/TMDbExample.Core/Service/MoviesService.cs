@@ -24,13 +24,6 @@ namespace TMDbExample.Core.Service
             ResetToFirstPage();
         }
 
-        public async Task<Movie> GetMovieAsync(string id)
-        {
-            await _configurationService.ConfigureIfNeededAsync();
-            var movieData = await _moviesRepository.GetMovieAsync(id);
-            return MapToMovie(movieData);
-        }
-
         public async Task<IEnumerable<Movie>> GetUpcomingMoviesPageAsync(bool fromFirstPage = false)
         {
             await _configurationService.ConfigureIfNeededAsync();

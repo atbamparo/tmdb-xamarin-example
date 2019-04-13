@@ -34,7 +34,7 @@ namespace TMDbExample.Core.Test.Repository.Movies
             var results = currentlyPlaying.Results.ToList();
             Assert.AreEqual("1", results[0].Id);
             Assert.AreEqual("2", results[1].Id);
-            VerifyHandlerCall<UpcomingMoviesData>(HttpMethod.Get, "movie/upcoming?page=1&language=en-US&region=US");
+            VerifyHandlerCall<UpcomingMoviesData>(HttpMethod.Get, "movie/upcoming?page=1");
         }
 
         [TestMethod]
@@ -51,7 +51,7 @@ namespace TMDbExample.Core.Test.Repository.Movies
             var results = currentlyPlaying.Results.ToList();
             Assert.AreEqual("1", results[0].Id);
             Assert.AreEqual("2", results[1].Id);
-            VerifyHandlerCall<UpcomingMoviesData> (HttpMethod.Get, "movie/upcoming?page=2&language=en-US&region=US");
+            VerifyHandlerCall<UpcomingMoviesData> (HttpMethod.Get, "movie/upcoming?page=2");
         }
 
         [TestMethod]
@@ -68,7 +68,7 @@ namespace TMDbExample.Core.Test.Repository.Movies
             var results = currentlyPlaying.Results.ToList();
             Assert.AreEqual("1", results[0].Id);
             Assert.AreEqual("2", results[1].Id);
-            VerifyHandlerCall<UpcomingMoviesData>(HttpMethod.Get, "movie/upcoming?page=1&language=pt-BR&region=US");
+            VerifyHandlerCall<UpcomingMoviesData>(HttpMethod.Get, "movie/upcoming?page=1&language=pt-BR");
         }
 
         [TestMethod]
@@ -85,7 +85,7 @@ namespace TMDbExample.Core.Test.Repository.Movies
             var results = currentlyPlaying.Results.ToList();
             Assert.AreEqual("1", results[0].Id);
             Assert.AreEqual("2", results[1].Id);
-            VerifyHandlerCall<UpcomingMoviesData>(HttpMethod.Get, "movie/upcoming?page=1&language=en-US&region=BR");
+            VerifyHandlerCall<UpcomingMoviesData>(HttpMethod.Get, "movie/upcoming?page=1&region=BR");
         }
 
         private UpcomingMoviesData CreateBasicUpcomingMoviesData() =>

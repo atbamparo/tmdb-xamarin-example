@@ -6,8 +6,6 @@ namespace TMDbExample.Core.Service.API
 {
     public interface IMoviesService
     {
-        Task<Movie> GetMovieAsync(string id);
-
         Task<IEnumerable<Movie>> GetUpcomingMoviesPageAsync(bool reset = false);
     }
 }
