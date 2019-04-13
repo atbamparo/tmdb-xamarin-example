@@ -8,6 +8,7 @@ namespace TMDbExample.Core.Model
         public string Id { get; set; }
         public string Title { get; set; }
         public string OriginalTitle { get; set; }
+        public string Overview { get; set; }
         public ICollection<string> Genres { get; set; }
         public DateTime ReleaseDate { get; set; }
 

@@ -7,26 +7,54 @@
              Title="{Binding Title}">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <converters:ArrayToStringConverter x:Key="genresToString" Separator=" / " />
+            <converters:ArrayToStringConverter x:Key="genresToString" Separator=", " />
             <converters:EmptyImageUrlToPlaceholder x:Key="EmptyImageUrlToPlaceholder" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <ScrollView>
-        <StackLayout Spacing="10">
-            <ff:CachedImage Source="{Binding Movie.BackdropUrl, Converter={StaticResource EmptyImageUrlToPlaceholder}}" Aspect="AspectFill"
-                LoadingPlaceholder="http://www.theprintworks.com/wp-content/themes/psBella/assets/img/film-poster-placeholder.png"
-                ErrorPlaceholder="http://www.theprintworks.com/wp-content/themes/psBella/assets/img/film-poster-placeholder.png">
-            </ff:CachedImage>
-            <ff:CachedImage Source="{Binding Movie.PosterUrl, Converter={StaticResource EmptyImageUrlToPlaceholder}}" Margin="-20, 0, 0, 0"
-                LoadingPlaceholder="http://www.theprintworks.com/wp-content/themes/psBella/assets/img/film-poster-placeholder.png"
-                ErrorPlaceholder="http://www.theprintworks.com/wp-content/themes/psBella/assets/img/film-poster-placeholder.png">
-            </ff:CachedImage>
-            
-            <Label Text="{Binding Movie.Title}" FontSize="Large"/>
-            <Label Text="{Binding Movie.Genres, Converter={StaticResource genresToString}, ConverterParameter='No genre info available', StringFormat='({0})'}" FontSize="Micro" LineBreakMode="NoWrap" />
-            
-            <Label Text="{Binding Movie.ReleaseDate}" />
+        <StackLayout>
+            <Grid RowSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="110"></RowDefinition>
+                    <RowDefinition Height="65"></RowDefinition>
+                    <RowDefinition Height="75"></RowDefinition>
+                    <RowDefinition Height="6"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20"></ColumnDefinition>
+                    <ColumnDefinition Width="100"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <ff:CachedImage Source="{Binding Movie.BackdropUrl, Converter={StaticResource EmptyImageUrlToPlaceholder}}" Aspect="AspectFill"
+                    LoadingPlaceholder="http://www.theprintworks.com/wp-content/themes/psBella/assets/img/film-poster-placeholder.png"
+                    ErrorPlaceholder="http://www.theprintworks.com/wp-content/themes/psBella/assets/img/film-poster-placeholder.png"
+                    Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="2" Opacity="0.6"/>
+
+                <BoxView BackgroundColor="LightGray" Grid.Row="2" Grid.ColumnSpan="3" HorizontalOptions="Fill" VerticalOptions="Fill" Margin="0" />
+
+                <Frame Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" BackgroundColor="#66000000" Padding="3" HasShadow="False">
+                    <ContentView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <ff:CachedImage Source="{Binding Movie.PosterUrl, Converter={StaticResource EmptyImageUrlToPlaceholder}}" Aspect="AspectFill"
+                            LoadingPlaceholder="http://www.theprintworks.com/wp-content/themes/psBella/assets/img/film-poster-placeholder.png"
+                            ErrorPlaceholder="http://www.theprintworks.com/wp-content/themes/psBella/assets/img/film-poster-placeholder.png"
+                            VerticalOptions="Fill" HorizontalOptions="Fill" />
+                    </ContentView>
+                </Frame>
+
+                <Label Text="{Binding Movie.Title}" TextColor="#080808" FontSize="Medium"
+                    VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"
+                    MaxLines="3" LineBreakMode="TailTruncation"
+                    Grid.Column="2" Grid.Row="2" />
+            </Grid>
+            <StackLayout Margin="10">
+                <Label Text="{Binding Movie.Genres, Converter={StaticResource genresToString}, ConverterParameter='No genre info available', StringFormat='{0}'}" FontSize="Micro" LineBreakMode="NoWrap" />
+                <Label Text="{Binding Movie.Overview }" />
+                <BoxView HorizontalOptions="FillAndExpand" HeightRequest="1" BackgroundColor="Gray" />
+                <Label Text="{Binding Movie.ReleaseDate, StringFormat='Coming out in {0:MMM d, yyyy}'}" HorizontalOptions="EndAndExpand" />
+            </StackLayout>
         </StackLayout>
     </ScrollView>
+
 </ContentPage>
