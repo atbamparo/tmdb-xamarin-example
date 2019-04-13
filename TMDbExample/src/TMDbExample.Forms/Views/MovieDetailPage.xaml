@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:converters="clr-namespace:TMDbExample.Forms.Converters"
+             x:Class="TMDbExample.Views.MovieDetailPage"
+             Title="{Binding Title}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:ArrayToStringConverter x:Key="genresToString" Separator=" / " />
+            <converters:EmptyImageUrlToPlaceholder x:Key="EmptyImageUrlToPlaceholder" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <StackLayout Spacing="10">
+            <ff:CachedImage Source="{Binding Movie.BackdropUrl, Converter={StaticResource EmptyImageUrlToPlaceholder}}" Aspect="AspectFill"
+                LoadingPlaceholder="http://www.theprintworks.com/wp-content/themes/psBella/assets/img/film-poster-placeholder.png"
+                ErrorPlaceholder="http://www.theprintworks.com/wp-content/themes/psBella/assets/img/film-poster-placeholder.png">
+            </ff:CachedImage>
+            <ff:CachedImage Source="{Binding Movie.PosterUrl, Converter={StaticResource EmptyImageUrlToPlaceholder}}" Margin="-20, 0, 0, 0"
+                LoadingPlaceholder="http://www.theprintworks.com/wp-content/themes/psBella/assets/img/film-poster-placeholder.png"
+                ErrorPlaceholder="http://www.theprintworks.com/wp-content/themes/psBella/assets/img/film-poster-placeholder.png">
+            </ff:CachedImage>
+            
+            <Label Text="{Binding Movie.Title}" FontSize="Large"/>
+            <Label Text="{Binding Movie.Genres, Converter={StaticResource genresToString}, ConverterParameter='No genre info available', StringFormat='({0})'}" FontSize="Micro" LineBreakMode="NoWrap" />
+            
+            <Label Text="{Binding Movie.ReleaseDate}" />
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

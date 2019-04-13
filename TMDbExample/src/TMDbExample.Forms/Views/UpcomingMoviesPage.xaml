@@ -40,7 +40,7 @@
                                 </ff:CachedImage>
 
                                 <StackLayout Grid.Column="1" VerticalOptions="Center" HorizontalOptions="StartAndExpand">
-                                    <Label Text="{Binding Title}" FontSize="Large" />
+                                    <Label Text="{Binding Title}" FontSize="Large" MaxLines="3" />
                                     <Label Text="{Binding Genres, Converter={StaticResource genresToString}, ConverterParameter='No genre info available', StringFormat='({0})'}" FontSize="Micro" LineBreakMode="NoWrap" />
                                     <Label Text="{Binding ReleaseDate, StringFormat='{0:m}'}"/>
                                 </StackLayout>

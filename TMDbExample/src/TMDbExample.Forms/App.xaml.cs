@@ -2,6 +2,8 @@
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using TMDbExample.Views;
+using System.Threading;
+using System.Globalization;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace TMDbExample
@@ -27,7 +29,15 @@ namespace TMDbExample
 
         protected override void OnResume()
         {
-            // Handle when your app resumes
+            base.OnResume();
+            var defaultCulture = new CultureInfo("en-US");
+            SetCultureInfo(defaultCulture);
+        }
+
+        private void SetCultureInfo(CultureInfo culture)
+        {
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
         }
     }
 }

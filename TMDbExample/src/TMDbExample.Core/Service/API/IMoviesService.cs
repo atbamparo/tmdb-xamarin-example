@@ -8,6 +8,6 @@ namespace TMDbExample.Core.Service.API
     {
         Task<Movie> GetMovieAsync(string id);
 
-        Task<IEnumerable<Movie>> GetUpcomingMoviesAsync(int page);
+        Task<IEnumerable<Movie>> GetUpcomingMoviesPageAsync(bool reset = false);
     }
 }

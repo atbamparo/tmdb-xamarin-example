@@ -19,41 +19,29 @@ namespace TMDbExample.Views
             BindingContext = ViewModel = new UpcomingMoviesViewModel();
         }
 
-        void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
+        async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
         {
-            /*
-            var item = args.SelectedItem as Item;
-            if (item == null)
+            if (!(args.SelectedItem is Movie movie))
                 return;
 
-            await Navigation.PushAsync(new ItemDetailPage(new ItemDetailViewModel(item)));
-
-            // Manually deselect item.
+            var movieDetailViewModel = new MovieDetailViewModel(movie);
+            var movieDetailPage = new MovieDetailPage(movieDetailViewModel);
+            await Navigation.PushAsync(movieDetailPage);
             ItemsListView.SelectedItem = null;
-            */
-        }
-
-        async void AddItem_Clicked(object sender, EventArgs e)
-        {
-            //await Navigation.PushModalAsync(new NavigationPage(new NewItemPage()));
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
-
             if (!ViewModel.Loaded)
+            {
                 ViewModel.LoadUpcomingMoviesCommand.Execute(null);
+            }
         }
 
         private void ItemAppearing(object sender, ItemVisibilityEventArgs e)
         {
-            if (!(e.Item is Movie movie))
-            {
-                return;
-            }
-
-            if (!(sender is ListView listView))
+            if (!(e.Item is Movie movie) || !(sender is ListView listView))
             {
                 return;
             }

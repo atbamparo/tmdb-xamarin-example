@@ -68,7 +68,5 @@ namespace TMDbExample.Core.Service
             _imageConfigurationData = config.Images;
             _genres = genres.ToDictionary(g => g.Id, g => g.Name);
         }
-
-
     }
 }
