@@ -13,9 +13,11 @@ namespace TMDbExample.Forms.ViewModels
 
         static ViewModelLocator()
         {
+            const string TMDbApiKey = "API-KEY";
+
             var builder = new ContainerBuilder();
             builder.RegisterType<RequestHandler3>().As<IRequestHandler>()
-                .WithParameter(new NamedParameter("apiKey", "API-KEY"));
+                .WithParameter(new NamedParameter("apiKey", TMDbApiKey));
             builder.RegisterType<HttpClient>().SingleInstance();
 
             builder.RegisterType<MoviesRepository>().As<IMoviesRepository>();
