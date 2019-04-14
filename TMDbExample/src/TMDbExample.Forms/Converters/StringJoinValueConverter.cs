@@ -7,7 +7,7 @@ using Xamarin.Forms;
 
 namespace TMDbExample.Forms.Converters
 {
-    public class ArrayToStringConverter : IValueConverter
+    public class StringJoinValueConverter : IValueConverter
     {
         public string Separator { get; set; } = ", ";
 
