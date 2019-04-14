@@ -2,9 +2,11 @@
 
 namespace TMDbExample.Forms.ViewModels
 {
-    public class MovieDetailViewModel
+    public class MovieDetailViewModel: BaseViewModel
     {
-        public string Title { get; set; }
+        private string _title;
+        public string Title { get => _title; private set => SetProperty(ref _title, value); }
+
         public Movie Movie { get; set; }
         public MovieDetailViewModel(Movie movie = null)
         {

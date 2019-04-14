@@ -10,12 +10,15 @@ using System.Linq;
 
 namespace TMDbExample.Forms.ViewModels
 {
-    public class UpcomingMoviesViewModel
+    public class UpcomingMoviesViewModel : BaseViewModel
     {
         private readonly IMoviesService _moviesService;
 
-        public bool IsBusy { get; private set; } = false;
-        public bool Loaded { get; private set; } = false;
+        private bool _isBusy = false;
+        public bool IsBusy { get => _isBusy; private set => SetProperty(ref _isBusy, value); }
+
+        private bool _loaded = false;
+        public bool Loaded { get => _loaded; private set => SetProperty(ref _loaded, value); }
 
         public ObservableCollection<Movie> Movies { get; }
 
