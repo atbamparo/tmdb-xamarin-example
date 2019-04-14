@@ -43,6 +43,11 @@ namespace TMDbExample.Core.Service
 
         private IEnumerable<Movie> MapToMovies(MoviesData movies)
         {
+            if (movies.Results.Count == 0)
+            {
+                return Enumerable.Empty<Movie>();
+            }
+
             var imageConfiguration = _configurationService.GetImageConfiguration();
             return movies.Results.Select(data =>
             {
@@ -51,7 +56,6 @@ namespace TMDbExample.Core.Service
                 {
                     Id = data.Id,
                     Title = data.Title,
-                    OriginalTitle = data.OriginalTitle,
                     Overview = data.Overview,
                     PosterUrl = posterUrl,
                     BackdropUrl = backdropUrl,
@@ -60,24 +64,6 @@ namespace TMDbExample.Core.Service
                 };
                 return movie;
             });
-        }
-
-        private Movie MapToMovie(MovieData data)
-        {
-            var imageConfiguration = _configurationService.GetImageConfiguration();
-            var (posterUrl, backdropUrl) = GetImageUrls(imageConfiguration, data.PosterPath, data.BackdropPath);
-
-            return new Movie
-            {
-                Id = data.Id,
-                Title = data.Title,
-                OriginalTitle = data.OriginalTitle,
-                Overview = data.Overview,
-                PosterUrl = posterUrl,
-                BackdropUrl = backdropUrl,
-                ReleaseDate = data.ReleaseDate,
-                Genres = data.Genres.Select(g => g.Name).ToList()
-            };
         }
 
         private (string posterUrl, string backdropUrl) GetImageUrls(ImageConfiguration config, string posterPath, string backdropPath)
