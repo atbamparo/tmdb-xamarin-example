@@ -10,17 +10,20 @@ using System.Linq;
 
 namespace TMDbExample.Forms.ViewModels
 {
-    public class UpcomingMoviesViewModel : BaseViewModel
+    public class UpcomingMoviesViewModel
     {
         private readonly IMoviesService _moviesService;
 
-        private bool _loaded = false;
-        public bool Loaded { get => _loaded; private set => SetProperty(ref _loaded, value); }
+        public bool IsBusy { get; private set; } = false;
+        public bool Loaded { get; private set; } = false;
 
         public ObservableCollection<Movie> Movies { get; }
 
         public Command LoadUpcomingMoviesCommand { get; }
         public Command LoadNextPageCommand { get; }
+
+        private int _totalPages = 1;
+        private int _currentPage;
 
         public UpcomingMoviesViewModel()
         {
@@ -40,7 +43,8 @@ namespace TMDbExample.Forms.ViewModels
             try
             {
                 IsBusy = true;
-                var movies = await _moviesService.GetUpcomingMoviesPageAsync(true);
+                _currentPage = 1;
+                var movies = await GetMoviePage();
                 Movies.Clear();
                 AddMovies(movies);
                 Loaded = true;
@@ -53,6 +57,8 @@ namespace TMDbExample.Forms.ViewModels
             {
                 IsBusy = false;
             }
+
+            
         }
 
         private async Task LoadUpcomingMoviesPageAsync()
@@ -65,7 +71,7 @@ namespace TMDbExample.Forms.ViewModels
             try
             {
                 IsBusy = true;
-                var movies = await _moviesService.GetUpcomingMoviesPageAsync();
+                var movies = await GetMoviePage();
                 AddMovies(movies);
             }
             catch (Exception ex)
@@ -76,6 +82,19 @@ namespace TMDbExample.Forms.ViewModels
             {
                 IsBusy = false;
             }
+        }
+
+        private async Task<IEnumerable<Movie>> GetMoviePage()
+        {
+            if (_currentPage > _totalPages)
+            {
+                return Enumerable.Empty<Movie>();
+            }
+
+            var moviePage = await _moviesService.GetUpcomingMoviesPageAsync(_currentPage);
+            _currentPage++;
+            _totalPages = moviePage.TotalPages;
+            return moviePage.Results;
         }
 
         private void AddMovies(IEnumerable<Movie> movies)

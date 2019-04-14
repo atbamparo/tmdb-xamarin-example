@@ -13,44 +13,22 @@ namespace TMDbExample.Core.Service
         private readonly IConfigurationService _configurationService;
         private readonly IMoviesRepository _moviesRepository;
 
-        private int _nextPage;
-        private int? _totalPages;
-        private bool HaveNextPage => !_totalPages.HasValue || _totalPages.Value >= _nextPage;
-
         public MoviesService(IConfigurationService configurationService, IMoviesRepository moviesRepository)
         {
             _moviesRepository = moviesRepository;
             _configurationService = configurationService;
-            ResetToFirstPage();
         }
 
-        public async Task<IEnumerable<Movie>> GetUpcomingMoviesPageAsync(bool fromFirstPage = false)
+        public async Task<Page<Movie>> GetUpcomingMoviesPageAsync(int page)
         {
             await _configurationService.ConfigureIfNeededAsync();
-
-            if (fromFirstPage)
-            {
-                ResetToFirstPage();
-            }
-
-            if (!HaveNextPage)
-            {
-                return Enumerable.Empty<Movie>();
-            }
-
-            var upcoming = await _moviesRepository.GetUpcomingMoviesAsync(_nextPage);
+            var upcoming = await _moviesRepository.GetUpcomingMoviesAsync(page);
             var movies = MapToMovies(upcoming);
-
-            _totalPages = upcoming.TotalPages;
-            _nextPage++;
-
-            return movies;
-        }
-
-        private void ResetToFirstPage()
-        {
-            _nextPage = 1;
-            _totalPages = null;
+            return new Page<Movie>
+            {
+                TotalPages = upcoming.TotalPages,
+                Results = movies
+            };
         }
 
         private IEnumerable<Movie> MapToMovies(UpcomingMoviesData movies)
