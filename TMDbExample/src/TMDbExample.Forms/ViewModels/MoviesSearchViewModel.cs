@@ -14,47 +14,51 @@ namespace TMDbExample.Forms.ViewModels
     {
         private readonly IMoviesService _moviesService;
 
-        private bool _isBusy = false;
-        public bool IsBusy { get => _isBusy; private set => SetProperty(ref _isBusy, value); }
-
         public ObservableCollection<Movie> Movies { get; }
         public Command<string> SearchCommand { get; }
+        public Command GetNextPageCommand { get; }
 
-        private int _totalPages = 1;
-        private int _currentPage = 1;
         private string _searchTerm = string.Empty;
+        private readonly Paginator<Movie> _paginator;
+
+        public event EventHandler OnSearchCompletes;
 
         public MoviesSearchViewModel()
         {
-            _moviesService = ViewModelLocator.Resolve<IMoviesService>();
             Movies = new ObservableCollection<Movie>();
+
+            _moviesService = ViewModelLocator.Resolve<IMoviesService>();
+            _paginator = new Paginator<Movie>(page => _moviesService.SearchMoviesAsync(_searchTerm, page));
+            
             SearchCommand = new Command<string>(async query => await SearchMovies(query));
+            GetNextPageCommand = new Command(async () => await GetNextPage());
         }
 
         public async Task SearchMovies(string query)
         {
-            if (IsBusy)
+            if (string.IsNullOrWhiteSpace(query))
             {
                 return;
             }
 
-            try
+            await DoBusyActionAsync(async () =>
             {
-                IsBusy = true;
                 _searchTerm = query;
-                _currentPage = 1;
-                var result = await _moviesService.SearchMoviesAsync(_searchTerm, _currentPage);
+                _paginator.ResetPages();
+                var result = await _paginator.GetPageAsync();
                 Movies.Clear();
-                AddMovies(result.Results);
-            }
-            catch(Exception ex)
+                AddMovies(result);
+                OnSearchCompletes(this, null);
+            });
+        }
+
+        public async Task GetNextPage()
+        {
+            await DoBusyActionAsync(async () =>
             {
-                Debug.WriteLine(ex);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
+                var result = await _paginator.GetPageAsync();
+                AddMovies(result);
+            });
         }
 
         private void AddMovies(IEnumerable<Movie> movies)

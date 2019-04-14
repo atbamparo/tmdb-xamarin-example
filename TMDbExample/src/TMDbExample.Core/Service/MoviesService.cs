@@ -82,23 +82,28 @@ namespace TMDbExample.Core.Service
 
         private (string posterUrl, string backdropUrl) GetImageUrls(ImageConfiguration config, string posterPath, string backdropPath)
         {
+            const int preferredPosterSizeIndex = 3;
+            const int preferredBackdropSizeIndex = 1;
+
             string posterUrl = null;
             if (!string.IsNullOrWhiteSpace(posterPath))
             {
-                var posterSize = config.PosterSizes.Count > 3 ? config.PosterSizes[3] : config.PosterSizes.LastOrDefault();
+                var posterSize = config.PosterSizes.Count > preferredPosterSizeIndex
+                    ? config.PosterSizes[preferredPosterSizeIndex]
+                    : config.PosterSizes.LastOrDefault();
                 posterUrl = $"{config.BaseUrl}{posterSize}{posterPath}";
             }
 
             string backdropUrl = null;
             if (!string.IsNullOrWhiteSpace(backdropPath))
             {
-                var backdropSize = config.BackdropSizes.Count > 1 ? config.BackdropSizes[1] : config.BackdropSizes.LastOrDefault();
+                var backdropSize = config.BackdropSizes.Count > preferredBackdropSizeIndex
+                    ? config.BackdropSizes[preferredBackdropSizeIndex]
+                    : config.BackdropSizes.LastOrDefault();
                 backdropUrl = $"{config.BaseUrl}{backdropSize}{backdropPath}";
             }
             
             return (posterUrl, backdropUrl);
         }
-
-        
     }
 }

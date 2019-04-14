@@ -10,8 +10,8 @@ namespace TMDbExample.Forms.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var date = (DateTime)value;
-            return date >= DateTime.UtcNow;
+            var date = (DateTime?)value;
+            return date.HasValue && date.Value >= DateTime.UtcNow;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

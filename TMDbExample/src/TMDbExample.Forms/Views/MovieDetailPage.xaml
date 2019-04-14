@@ -8,7 +8,6 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:ArrayToStringConverter x:Key="genresToString" Separator=", " />
-            <converters:EmptyImageUrlToPlaceholder x:Key="emptyImageUrlToPlaceholder" />
             <converters:DateTimeIsFutureValueConverter x:Key="isFutureConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -28,18 +27,21 @@
                     <ColumnDefinition Width="1*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
-                <ff:CachedImage Source="{Binding Movie.BackdropUrl, Converter={StaticResource emptyImageUrlToPlaceholder}}" Aspect="AspectFill"
+                <ff:CachedImage
+                    Aspect="AspectFill"
+                    Source="{Binding Movie.BackdropUrl, TargetNullValue='no_image_poster.png'}"
                     LoadingPlaceholder="http://www.theprintworks.com/wp-content/themes/psBella/assets/img/film-poster-placeholder.png"
                     ErrorPlaceholder="http://www.theprintworks.com/wp-content/themes/psBella/assets/img/film-poster-placeholder.png"
-                    Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="2" Opacity="0.6"/>
+                    Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="2" Opacity="0.6" />
 
-                <BoxView BackgroundColor="LightGray" Grid.Row="2" Grid.ColumnSpan="3" HorizontalOptions="Fill" VerticalOptions="Fill" Margin="0" />
+                <BoxView BackgroundColor="#50ff5a00" Grid.Row="2" Grid.ColumnSpan="3" HorizontalOptions="Fill" VerticalOptions="Fill" Margin="0" />
 
                 <Frame Grid.Column="1" Grid.Row="1" Grid.RowSpan="3" BackgroundColor="#66000000" Padding="3" HasShadow="False">
                     <ContentView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                        <ff:CachedImage Source="{Binding Movie.PosterUrl, Converter={StaticResource emptyImageUrlToPlaceholder}}" Aspect="AspectFill"
-                            LoadingPlaceholder="http://www.theprintworks.com/wp-content/themes/psBella/assets/img/film-poster-placeholder.png"
-                            ErrorPlaceholder="http://www.theprintworks.com/wp-content/themes/psBella/assets/img/film-poster-placeholder.png"
+                        <ff:CachedImage Aspect="AspectFill"
+                            Source="{Binding Movie.PosterUrl, TargetNullValue='no_image_poster.png'}"
+                            LoadingPlaceholder="no_image_poster.png"
+                            ErrorPlaceholder="no_image_poster.png"
                             VerticalOptions="Fill" HorizontalOptions="Fill" />
                     </ContentView>
                 </Frame>
@@ -53,10 +55,10 @@
                 <Label Text="{Binding Movie.Genres, Converter={StaticResource genresToString}, ConverterParameter='No genre info available', StringFormat='{0}'}" FontSize="Micro" LineBreakMode="NoWrap" />
                 <Label Text="{Binding Movie.Overview }" />
                 <BoxView HorizontalOptions="FillAndExpand" HeightRequest="1" BackgroundColor="Gray" />
-                <Label Text="{Binding Movie.ReleaseDate, StringFormat='Coming out in {0:MMM d, yyyy}'}" HorizontalOptions="EndAndExpand">
+                <Label Text="{Binding Movie.ReleaseDate, TargetNullValue='No release date info', StringFormat='Coming out in {0:MMM d, yyyy}'}" HorizontalOptions="EndAndExpand">
                     <Label.Triggers>
                         <DataTrigger TargetType="Label" Binding="{Binding Movie.ReleaseDate, Converter={StaticResource isFutureConverter}}" Value="False">
-                            <Setter Property="Text" Value="{Binding Movie.ReleaseDate, StringFormat='Released in {0:MMM d, yyyy}'}" />
+                            <Setter Property="Text" Value="{Binding Movie.ReleaseDate, TargetNullValue='No release date info', StringFormat='Released in {0:MMM d, yyyy}'}" />
                         </DataTrigger>
                     </Label.Triggers>
                 </Label>

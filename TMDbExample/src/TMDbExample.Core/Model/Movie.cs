@@ -10,7 +10,7 @@ namespace TMDbExample.Core.Model
         public string OriginalTitle { get; set; }
         public string Overview { get; set; }
         public ICollection<string> Genres { get; set; }
-        public DateTime ReleaseDate { get; set; }
+        public DateTime? ReleaseDate { get; set; }
 
         public string BackdropUrl { get; set; }
         public string PosterUrl { get; set; }

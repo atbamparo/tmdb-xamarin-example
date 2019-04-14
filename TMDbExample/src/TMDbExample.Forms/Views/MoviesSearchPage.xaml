@@ -9,7 +9,6 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:ArrayToStringConverter x:Key="genresToString" Separator=" / " />
-            <converters:EmptyImageUrlToPlaceholder x:Key="EmptyImageUrlToPlaceholder" />
         </ResourceDictionary>
     </ContentPage.Resources>
     
@@ -17,13 +16,14 @@
         <StackLayout>
             <SearchBar x:Name="MoviesSearch" Placeholder="Search for movies!"
                 SearchCommand="{Binding SearchCommand}" SearchCommandParameter="{Binding Text, Source={x:Reference MoviesSearch}}" />
-            <ListView
+            <ListView x:Name="MoviesList"
                 ItemsSource="{Binding Movies}"
                 RowHeight="200"
                 VerticalOptions="FillAndExpand"
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                 CachingStrategy="RecycleElement"
-                ItemSelected="OnItemSelected">
+                ItemSelected="OnItemSelected"
+                ItemAppearing="LoadMoreIfNeeded">
 
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -34,10 +34,11 @@
                                     <ColumnDefinition Width="3*" />
                                 </Grid.ColumnDefinitions>
 
-                                <ff:CachedImage Aspect="AspectFit" Source="{Binding PosterUrl, Converter={StaticResource EmptyImageUrlToPlaceholder}}" Grid.Column="0"
-                                    LoadingPlaceholder="http://www.theprintworks.com/wp-content/themes/psBella/assets/img/film-poster-placeholder.png"
-                                    ErrorPlaceholder="http://www.theprintworks.com/wp-content/themes/psBella/assets/img/film-poster-placeholder.png">
-                                </ff:CachedImage>
+                                <ff:CachedImage Aspect="AspectFit"
+                                    Source="{Binding PosterUrl, TargetNullValue='no_image_poster.png'}"
+                                    LoadingPlaceholder="no_image_poster.png"
+                                    ErrorPlaceholder="no_image_poster.png"
+                                    Grid.Column="0" />
 
                                 <StackLayout Grid.Column="1" VerticalOptions="Center" HorizontalOptions="StartAndExpand">
                                     <Label Text="{Binding Title}" FontSize="Large" MaxLines="3" />

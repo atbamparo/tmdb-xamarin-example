@@ -1,21 +1,16 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using TMDbExample.Core.Model;
 using System.Collections.Generic;
 using TMDbExample.Core.Service.API;
-using System.Linq;
 
 namespace TMDbExample.Forms.ViewModels
 {
     public class UpcomingMoviesViewModel : BaseViewModel
     {
         private readonly IMoviesService _moviesService;
-
-        private bool _isBusy = false;
-        public bool IsBusy { get => _isBusy; private set => SetProperty(ref _isBusy, value); }
 
         private bool _loaded = false;
         public bool Loaded { get => _loaded; private set => SetProperty(ref _loaded, value); }
@@ -25,12 +20,12 @@ namespace TMDbExample.Forms.ViewModels
         public Command LoadUpcomingMoviesCommand { get; }
         public Command LoadNextPageCommand { get; }
 
-        private int _totalPages = 1;
-        private int _currentPage;
+        private readonly Paginator<Movie> _paginator;
 
         public UpcomingMoviesViewModel()
         {
             _moviesService = ViewModelLocator.Resolve<IMoviesService>();
+            _paginator = new Paginator<Movie>(page => _moviesService.GetUpcomingMoviesPageAsync(page));
 
             Loaded = false;
             Movies = new ObservableCollection<Movie>();
@@ -40,65 +35,23 @@ namespace TMDbExample.Forms.ViewModels
 
         private async Task LoadFirstPageAsync()
         {
-            if (IsBusy)
-                return;
-
-            try
+            await DoBusyActionAsync(async () =>
             {
-                IsBusy = true;
-                _totalPages = 1;
-                _currentPage = 1;
-                var movies = await GetMoviePage();
+                _paginator.ResetPages();
+                var movies = await _paginator.GetPageAsync();
                 Movies.Clear();
                 AddMovies(movies);
                 Loaded = true;
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-
-            
+            });
         }
 
         private async Task LoadUpcomingMoviesPageAsync()
         {
-            if (IsBusy)
+            await DoBusyActionAsync(async () =>
             {
-                return;
-            }
-
-            try
-            {
-                IsBusy = true;
-                var movies = await GetMoviePage();
+                var movies = await _paginator.GetPageAsync();
                 AddMovies(movies);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
-
-        private async Task<IEnumerable<Movie>> GetMoviePage()
-        {
-            if (_currentPage > _totalPages)
-            {
-                return Enumerable.Empty<Movie>();
-            }
-
-            var moviePage = await _moviesService.GetUpcomingMoviesPageAsync(_currentPage);
-            _currentPage++;
-            _totalPages = moviePage.TotalPages;
-            return moviePage.Results;
+            });
         }
 
         private void AddMovies(IEnumerable<Movie> movies)
