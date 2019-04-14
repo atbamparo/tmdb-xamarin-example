@@ -17,8 +17,8 @@
             <SearchBar x:Name="MoviesSearch" Placeholder="Search for movies!"
                 SearchCommand="{Binding SearchCommand}" SearchCommandParameter="{Binding Text, Source={x:Reference MoviesSearch}}" />
             <ListView x:Name="MoviesList"
-                ItemsSource="{Binding Movies}"
                 RowHeight="200"
+                ItemsSource="{Binding Movies}"
                 VerticalOptions="FillAndExpand"
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                 CachingStrategy="RecycleElement"
@@ -28,7 +28,7 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Grid Padding="5">
+                            <Grid Padding="5" HeightRequest="200">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="2*" />
                                     <ColumnDefinition Width="3*" />

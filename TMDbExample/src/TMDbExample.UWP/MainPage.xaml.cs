@@ -21,7 +21,7 @@ namespace TMDbExample.UWP
         {
             this.InitializeComponent();
 
-            LoadApplication(new TMDbExample.App());
+            LoadApplication(new TMDbExample.Forms.App());
         }
     }
 }
