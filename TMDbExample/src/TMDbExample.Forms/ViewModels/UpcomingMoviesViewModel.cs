@@ -46,6 +46,7 @@ namespace TMDbExample.Forms.ViewModels
             try
             {
                 IsBusy = true;
+                _totalPages = 1;
                 _currentPage = 1;
                 var movies = await GetMoviePage();
                 Movies.Clear();

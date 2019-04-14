@@ -1,12 +1,12 @@
 ﻿using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using TMDbExample.Views;
 using System.Threading;
 using System.Globalization;
+using TMDbExample.Forms.Views;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
-namespace TMDbExample
+namespace TMDbExample.Forms
 {
     public partial class App : Application
     {

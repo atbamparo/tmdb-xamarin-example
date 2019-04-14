@@ -6,7 +6,7 @@ using TMDbExample.Forms.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace TMDbExample.Views
+namespace TMDbExample.Forms.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class UpcomingMoviesPage : ContentPage
@@ -28,6 +28,24 @@ namespace TMDbExample.Views
             var movieDetailPage = new MovieDetailPage(movieDetailViewModel);
             await Navigation.PushAsync(movieDetailPage);
             ItemsListView.SelectedItem = null;
+        }
+
+        private bool _navigatingToSearchPage = false;
+        async void OpenSearchPage(object sender, ClickedEventArgs args)
+        {
+            if (_navigatingToSearchPage)
+                return;
+
+            try
+            {
+                _navigatingToSearchPage = true;
+                var searchPage = new MoviesSearchPage();
+                await Navigation.PushAsync(searchPage);
+            }
+            finally
+            {
+                _navigatingToSearchPage = false;
+            }
         }
 
         protected override void OnAppearing()

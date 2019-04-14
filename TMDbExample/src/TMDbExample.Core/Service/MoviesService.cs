@@ -23,15 +23,25 @@ namespace TMDbExample.Core.Service
         {
             await _configurationService.ConfigureIfNeededAsync();
             var upcoming = await _moviesRepository.GetUpcomingMoviesAsync(page);
-            var movies = MapToMovies(upcoming);
             return new Page<Movie>
             {
                 TotalPages = upcoming.TotalPages,
-                Results = movies
+                Results = MapToMovies(upcoming)
             };
         }
 
-        private IEnumerable<Movie> MapToMovies(UpcomingMoviesData movies)
+        public async Task<Page<Movie>> SearchMoviesAsync(string query, int pageNumber)
+        {
+            await _configurationService.ConfigureIfNeededAsync();
+            var searchResult = await _moviesRepository.SearchMoviesAsync(query, pageNumber);
+            return new Page<Movie>
+            {
+                TotalPages = searchResult.TotalPages,
+                Results = MapToMovies(searchResult)
+            };
+        }
+
+        private IEnumerable<Movie> MapToMovies(MoviesData movies)
         {
             var imageConfiguration = _configurationService.GetImageConfiguration();
             return movies.Results.Select(data =>

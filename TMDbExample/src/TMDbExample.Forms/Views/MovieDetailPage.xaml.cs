@@ -2,7 +2,7 @@
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace TMDbExample.Views
+namespace TMDbExample.Forms.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MovieDetailPage : ContentPage

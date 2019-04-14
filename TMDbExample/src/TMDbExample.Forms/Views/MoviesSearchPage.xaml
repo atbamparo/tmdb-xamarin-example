@@ -3,32 +3,28 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:converters="clr-namespace:TMDbExample.Forms.Converters"
-             x:Class="TMDbExample.Forms.Views.UpcomingMoviesPage"
-             Title="Upcoming movies"
-             x:Name="BrowseItemsPage">
+             x:Class="TMDbExample.Forms.Views.MoviesSearchPage"
+             Title="Movies search">
+    
     <ContentPage.Resources>
         <ResourceDictionary>
             <converters:ArrayToStringConverter x:Key="genresToString" Separator=" / " />
             <converters:EmptyImageUrlToPlaceholder x:Key="EmptyImageUrlToPlaceholder" />
         </ResourceDictionary>
     </ContentPage.Resources>
-
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="SEARCH MOVIES" Clicked="OpenSearchPage" />
-    </ContentPage.ToolbarItems>
     
     <ContentPage.Content>
         <StackLayout>
-            <ListView x:Name="ItemsListView" 
+            <SearchBar x:Name="MoviesSearch" Placeholder="Search for movies!"
+                SearchCommand="{Binding SearchCommand}" SearchCommandParameter="{Binding Text, Source={x:Reference MoviesSearch}}" />
+            <ListView
                 ItemsSource="{Binding Movies}"
                 RowHeight="200"
                 VerticalOptions="FillAndExpand"
-                RefreshCommand="{Binding LoadUpcomingMoviesCommand}"
-                IsPullToRefreshEnabled="true"
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                 CachingStrategy="RecycleElement"
-                ItemSelected="OnItemSelected"
-                ItemAppearing="ItemAppearing">
+                ItemSelected="OnItemSelected">
+
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -45,13 +41,14 @@
 
                                 <StackLayout Grid.Column="1" VerticalOptions="Center" HorizontalOptions="StartAndExpand">
                                     <Label Text="{Binding Title}" FontSize="Large" MaxLines="3" />
+                                    <Label Text="{Binding ReleaseDate.Year}"/>
                                     <Label Text="{Binding Genres, Converter={StaticResource genresToString}, ConverterParameter='No genre info available', StringFormat='({0})'}" FontSize="Micro" LineBreakMode="NoWrap" />
-                                    <Label Text="{Binding ReleaseDate, StringFormat='{0:m}'}"/>
                                 </StackLayout>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
+                
             </ListView>
         </StackLayout>
     </ContentPage.Content>

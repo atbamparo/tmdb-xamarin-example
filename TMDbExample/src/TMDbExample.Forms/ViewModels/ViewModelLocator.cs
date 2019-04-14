@@ -1,8 +1,5 @@
 ﻿using Autofac;
-using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using TMDbExample.Core.Repository;
 using TMDbExample.Core.Repository.API;
 using TMDbExample.Core.Service;
