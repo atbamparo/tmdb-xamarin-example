@@ -2345,26 +2345,26 @@ namespace TMDbExample.Droid
 			// aapt resource value: 0x7f020053
 			public const int avd_hide_password = 2130837587;
 			
+			// aapt resource value: 0x7f020132
+			public const int avd_hide_password_1 = 2130837810;
+			
 			// aapt resource value: 0x7f020133
-			public const int avd_hide_password_1 = 2130837811;
+			public const int avd_hide_password_2 = 2130837811;
 			
 			// aapt resource value: 0x7f020134
-			public const int avd_hide_password_2 = 2130837812;
-			
-			// aapt resource value: 0x7f020135
-			public const int avd_hide_password_3 = 2130837813;
+			public const int avd_hide_password_3 = 2130837812;
 			
 			// aapt resource value: 0x7f020054
 			public const int avd_show_password = 2130837588;
 			
+			// aapt resource value: 0x7f020135
+			public const int avd_show_password_1 = 2130837813;
+			
 			// aapt resource value: 0x7f020136
-			public const int avd_show_password_1 = 2130837814;
+			public const int avd_show_password_2 = 2130837814;
 			
 			// aapt resource value: 0x7f020137
-			public const int avd_show_password_2 = 2130837815;
-			
-			// aapt resource value: 0x7f020138
-			public const int avd_show_password_3 = 2130837816;
+			public const int avd_show_password_3 = 2130837815;
 			
 			// aapt resource value: 0x7f020055
 			public const int design_bottom_navigation_item_background = 2130837589;
@@ -3008,11 +3008,11 @@ namespace TMDbExample.Droid
 			// aapt resource value: 0x7f02012a
 			public const int notification_icon_background = 2130837802;
 			
-			// aapt resource value: 0x7f020131
-			public const int notification_template_icon_bg = 2130837809;
+			// aapt resource value: 0x7f020130
+			public const int notification_template_icon_bg = 2130837808;
 			
-			// aapt resource value: 0x7f020132
-			public const int notification_template_icon_low_bg = 2130837810;
+			// aapt resource value: 0x7f020131
+			public const int notification_template_icon_low_bg = 2130837809;
 			
 			// aapt resource value: 0x7f02012b
 			public const int notification_tile_bg = 2130837803;
@@ -3028,9 +3028,6 @@ namespace TMDbExample.Droid
 			
 			// aapt resource value: 0x7f02012f
 			public const int tooltip_frame_light = 2130837807;
-			
-			// aapt resource value: 0x7f020130
-			public const int xamarin_logo = 2130837808;
 			
 			static Drawable()
 			{
@@ -3306,14 +3303,14 @@ namespace TMDbExample.Droid
 			// aapt resource value: 0x7f090061
 			public const int list_item = 2131296353;
 			
-			// aapt resource value: 0x7f0900ca
-			public const int masked = 2131296458;
+			// aapt resource value: 0x7f0900c9
+			public const int masked = 2131296457;
 			
 			// aapt resource value: 0x7f0900b9
 			public const int media_actions = 2131296441;
 			
-			// aapt resource value: 0x7f0900c8
-			public const int message = 2131296456;
+			// aapt resource value: 0x7f0900c7
+			public const int message = 2131296455;
 			
 			// aapt resource value: 0x7f090031
 			public const int middle = 2131296305;
@@ -3522,9 +3519,6 @@ namespace TMDbExample.Droid
 			// aapt resource value: 0x7f090025
 			public const int showTitle = 2131296293;
 			
-			// aapt resource value: 0x7f0900c6
-			public const int sliding_tabs = 2131296454;
-			
 			// aapt resource value: 0x7f09008b
 			public const int smallLabel = 2131296395;
 			
@@ -3603,8 +3597,8 @@ namespace TMDbExample.Droid
 			// aapt resource value: 0x7f09006f
 			public const int title_template = 2131296367;
 			
-			// aapt resource value: 0x7f0900c7
-			public const int toolbar = 2131296455;
+			// aapt resource value: 0x7f0900c6
+			public const int toolbar = 2131296454;
 			
 			// aapt resource value: 0x7f09003e
 			public const int top = 2131296318;
@@ -3642,8 +3636,8 @@ namespace TMDbExample.Droid
 			// aapt resource value: 0x7f090016
 			public const int view_offset_helper = 2131296278;
 			
-			// aapt resource value: 0x7f0900c9
-			public const int visible = 2131296457;
+			// aapt resource value: 0x7f0900c8
+			public const int visible = 2131296456;
 			
 			// aapt resource value: 0x7f0900ab
 			public const int volume_item_container = 2131296427;
@@ -3934,13 +3928,10 @@ namespace TMDbExample.Droid
 			public const int support_simple_spinner_dropdown_item = 2130968640;
 			
 			// aapt resource value: 0x7f040041
-			public const int Tabbar = 2130968641;
+			public const int Toolbar = 2130968641;
 			
 			// aapt resource value: 0x7f040042
-			public const int Toolbar = 2130968642;
-			
-			// aapt resource value: 0x7f040043
-			public const int tooltip = 2130968643;
+			public const int tooltip = 2130968642;
 			
 			static Layout()
 			{
@@ -3960,9 +3951,6 @@ namespace TMDbExample.Droid
 			
 			// aapt resource value: 0x7f030001
 			public const int icon_round = 2130903041;
-			
-			// aapt resource value: 0x7f030002
-			public const int launcher_foreground = 2130903042;
 			
 			static Mipmap()
 			{
