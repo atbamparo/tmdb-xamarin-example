@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 
 namespace TMDbExample.Droid
 {
@@ -23,16 +16,14 @@ namespace TMDbExample.Droid
             
         }
 
-        // Launches the startup task
         protected override void OnResume()
         {
             base.OnResume();
-            Task startupWork = new Task(() => { SimulateStartup(); });
+            Task startupWork = new Task(() => { Startup(); });
             startupWork.Start();
         }
 
-        // Simulates background work that happens behind the splash screen
-        void SimulateStartup()
+        private void Startup()
         {
             FFImageLoading.Forms.Platform.CachedImageRenderer.Init(false);
             StartActivity(new Intent(Application.Context, typeof(MainActivity)));
