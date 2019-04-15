@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:converters="clr-namespace:TMDbExample.Forms.Converters"
+             x:Class="TMDbExample.Forms.Views.UpcomingMoviesPage"
+             Title="Upcoming movies"
+             x:Name="BrowseItemsPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:StringJoinValueConverter x:Key="genresToString" Separator=" / " />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="SEARCH MOVIES" Icon="search_icon.png" Clicked="OpenSearchPage" />
+    </ContentPage.ToolbarItems>
+    
+    <ContentPage.Content>
+        <StackLayout>
+            <ListView x:Name="ItemsListView"
+                RowHeight="200"
+                ItemsSource="{Binding Movies}"
+                VerticalOptions="FillAndExpand"
+                RefreshCommand="{Binding LoadUpcomingMoviesCommand}"
+                IsPullToRefreshEnabled="true"
+                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                CachingStrategy="RecycleElement"
+                ItemSelected="OnItemSelected"
+                ItemAppearing="ItemAppearing">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Padding="5" HeightRequest="200">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="3*" />
+                                </Grid.ColumnDefinitions>
+    
+                                <ff:CachedImage Aspect="AspectFit"
+                                    VerticalOptions="Fill" HorizontalOptions="Fill"
+                                    Source="{Binding PosterUrl, TargetNullValue='no_image_poster.png'}"
+                                    LoadingPlaceholder="no_image_poster.png"
+                                    ErrorPlaceholder="no_image_poster.png"
+                                    Grid.Column="0" />
+
+
+                                <StackLayout Grid.Column="1" VerticalOptions="Center" HorizontalOptions="StartAndExpand">
+                                    <Label Text="{Binding Title}" FontSize="Large" MaxLines="3" LineBreakMode="TailTruncation" />
+                                    <Label Text="{Binding Genres, Converter={StaticResource genresToString}, ConverterParameter='No genre info available', StringFormat='({0})'}" FontSize="Micro" LineBreakMode="NoWrap" />
+                                    <Label Text="{Binding ReleaseDate, StringFormat='{0:m}'}"/>
+                                </StackLayout>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
