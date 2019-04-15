@@ -19,3 +19,4 @@
 ## Thirdy party libraries
 * **Xamarin** - toolkit used to create and build the whole app
 * **AutoFac** - Dependency injection container that i already work with, used to resolve the core project services and repositories. Used in TMDbExample\src\TMDbExample.Forms\ViewModels\ViewModelLocator.cs
+* **Newtonsoft.Json** - Json parser used to parse the response from TMDb api.
